@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { articles, stories, tones } from './data.js';
 
 describe('supplementary learning content', () => {
-  it('contains all six tone examples', () => {
+  it('contains all six tone examples and translations for their descriptions', () => {
     expect(tones.map((tone) => tone.mark)).toEqual(['ma', 'má', 'mà', 'mả', 'mã', 'mạ']);
+    expect(tones.every((tone) => tone.descriptionVi && tone.descriptionRu)).toBe(true);
   });
 
   it('keeps each story answerable and bilingual', () => {
@@ -11,8 +12,10 @@ describe('supplementary learning content', () => {
     expect(new Set(stories.map((story) => story.id)).size).toBe(stories.length);
     for (const story of stories) {
       expect(story.story.length).toBeGreaterThanOrEqual(3);
-      expect(story.story.every((line) => line.vi && line.en)).toBe(true);
+      expect(story.story.every((line) => line.vi && line.en && line.ru)).toBe(true);
+      expect(story.titleVi && story.titleRu && story.summaryVi && story.summaryRu).toBeTruthy();
       expect(story.options[story.answer]).toBeTruthy();
+      expect(story.optionsRu[story.answer]).toBeTruthy();
       expect(story.question).toBeTruthy();
     }
   });
@@ -21,5 +24,6 @@ describe('supplementary learning content', () => {
     expect(articles).toHaveLength(4);
     expect(new Set(articles.map((article) => article.slug)).size).toBe(articles.length);
     expect(articles.every((article) => article.paragraphs.length > 0)).toBe(true);
+    expect(articles.every((article) => article.paragraphsVi.length === article.paragraphs.length && article.paragraphsRu.length === article.paragraphs.length)).toBe(true);
   });
 });

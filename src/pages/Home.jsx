@@ -37,36 +37,36 @@ export default function HomePage() {
           </div>
         </div>
         <div className="dashboard-hero-side">
-          <div className="dashboard-photo"><img src={heroImage} alt="A learner studying Vietnamese beside a notebook and laptop at home" /><span className="dashboard-photo-caption">VIETSOUND · A1 COURSE</span></div>
+          <div className="dashboard-photo"><img src={heroImage} alt={lang === 'vi' ? 'Người học tiếng Việt tại nhà bên cạnh máy tính xách tay và quyển vở' : lang === 'ru' ? 'Ученик занимается вьетнамским языком дома за ноутбуком и с тетрадью' : 'A learner studying Vietnamese beside a notebook and laptop at home'} /><span className="dashboard-photo-caption">{t('dashboardPhotoCaption')}</span></div>
           <article className="continue-card">
             <div className="continue-card-top"><span className="continue-card-label"><span className="live-dot" />{allComplete ? t('courseComplete') : isResume ? t('resumeLesson') : t('nextStep')}</span><span className="continue-card-number">{focusLesson.number} / 12</span></div>
-            <h2>{lang === 'vi' ? focusLesson.titleVi : focusLesson.title}</h2>
-            <p>{focusLesson.objective}</p>
+            <h2>{lang === 'vi' ? focusLesson.titleVi : lang === 'ru' ? focusLesson.titleRu : focusLesson.title}</h2>
+            <p>{lang === 'vi' ? focusLesson.objectiveVi : lang === 'ru' ? focusLesson.objectiveRu : focusLesson.objective}</p>
             <Link to={`/lesson/${focusLesson.id}`} className="continue-card-action"><span>{allComplete ? t('reviewLastLesson') : isResume ? t('continueLearning') : t('startLearning')}</span><span className="continue-arrow"><ArrowRight size={17} /></span></Link>
           </article>
-          <div className="tone-peek"><span><small>LISTEN · SIX TONES</small><strong>ma · má · mà · mả · mã · mạ</strong></span><SoundButton text="ma, má, mà, mả, mã, mạ" label="Listen to the six tones" /></div>
+          <div className="tone-peek"><span><small>{t('listenSixTones')}</small><strong>ma · má · mà · mả · mã · mạ</strong></span><SoundButton text="ma, má, mà, mả, mã, mạ" label={lang === 'ru' ? 'Слушать шесть тонов' : lang === 'vi' ? 'Nghe sáu thanh điệu' : 'Listen to the six tones'} /></div>
         </div>
       </section>
 
       <section className="dashboard-stats page-container">
-        <div><strong>{courseLessons.length}</strong><span>guided lessons</span></div><i />
-        <div><strong>{courseUnits.length}</strong><span>learning units</span></div><i />
+        <div><strong>{courseLessons.length}</strong><span>{t('guidedLessons')}</span></div><i />
+        <div><strong>{courseUnits.length}</strong><span>{t('learningUnits')}</span></div><i />
         <div><strong>{new Set(courseLessons.flatMap((lesson) => lesson.vocabulary.map((word) => word.term))).size}</strong><span>{t('wordsLearned')}</span></div><i />
-        <div><strong>4</strong><span>skills: listen · speak · read · write</span></div>
+        <div><strong>4</strong><span>{t('fourSkills')}</span></div>
       </section>
 
       <section className="section section-paper dashboard-course-section">
         <div className="page-container">
-          <SectionHeading eyebrow={lang === 'vi' ? 'LỘ TRÌNH A1' : 'A1 BEGINNER COURSE'} title={lang === 'vi' ? 'Từng bước, theo đúng thứ tự.' : 'A clear path, lesson by lesson.'} body={lang === 'vi' ? 'Bạn có thể học tuần tự hoặc mở bất kỳ bài nào. Tiến độ luôn được lưu trên thiết bị này.' : 'Work through the course in order, or open any lesson. Your progress is saved on this device.'} link={{ to: '/course', label: t('courseMap') }} />
+          <SectionHeading eyebrow={t('homeCourseEyebrow')} title={t('homeCourseTitle')} body={t('homeCourseBody')} link={{ to: '/course', label: t('courseMap') }} />
           <div className="dashboard-units-grid">
             {courseUnits.slice(0, 2).map((unit) => {
               const unitLessons = unit.lessonIds.map((id) => getLessonById(id)).filter(Boolean);
               const done = unitLessons.filter((lesson) => progress.completed.includes(lesson.id)).length;
               return <article className="dashboard-unit-card" key={unit.id}>
                 <div className="dashboard-unit-top"><span>{t('unit')} {unit.number}</span><span>{done}/{unitLessons.length}</span></div>
-                <h3>{lang === 'vi' ? unit.titleVi : unit.title}</h3><p>{unit.summary}</p>
+                <h3>{lang === 'vi' ? unit.titleVi : lang === 'ru' ? unit.titleRu : unit.title}</h3><p>{lang === 'vi' ? unit.summaryVi : lang === 'ru' ? unit.summaryRu : unit.summary}</p>
                 <div className="dashboard-unit-lessons">{unitLessons.slice(0, 2).map((lesson) => <CourseLessonRow key={lesson.id} lesson={lesson} completed={progress.completed.includes(lesson.id)} bestScore={progress.bestScores[lesson.id]} current={focusLesson.id === lesson.id} />)}</div>
-                <Link className="text-link" to="/course">Open unit<ArrowRight size={15} /></Link>
+                <Link className="text-link" to="/course">{t('openUnit')}<ArrowRight size={15} /></Link>
               </article>;
             })}
           </div>
@@ -75,19 +75,19 @@ export default function HomePage() {
 
       <section className="section daily-practice-section">
         <div className="page-container daily-practice-layout">
-          <div className="daily-practice-copy"><p className="eyebrow eyebrow-light"><span className="eyebrow-dot" />{t('dailyPractice')}</p><h2>Hear it.<br /><em>Say it. Use it.</em></h2><p>Short, focused tools for practising the tones, finding a word and hearing Vietnamese in context.</p></div>
+          <div className="daily-practice-copy"><p className="eyebrow eyebrow-light"><span className="eyebrow-dot" />{t('dailyPractice')}</p><h2>{t('dailyHeadline')}</h2><p>{t('dailyBody')}</p></div>
           <div className="quick-tools-grid">
-            <Link to="/pronunciation" className="quick-tool-card"><span className="quick-tool-icon"><Headphones size={19} /></span><span><strong>Pronunciation</strong><small>Six tones · sounds · listening</small></span><ArrowRight size={16} /></Link>
-            <Link to="/knowledge" className="quick-tool-card"><span className="quick-tool-icon quick-tool-mint"><BookOpen size={19} /></span><span><strong>Course dictionary</strong><small>Search words and examples</small></span><ArrowRight size={16} /></Link>
-            <Link to="/stories" className="quick-tool-card"><span className="quick-tool-icon quick-tool-lilac"><Sparkles size={19} /></span><span><strong>Story practice</strong><small>Read · listen · understand</small></span><ArrowRight size={16} /></Link>
-            <Link to="/review" className="quick-tool-card"><span className="quick-tool-icon quick-tool-butter"><RotateCcw size={19} /></span><span><strong>Saved words</strong><small>{progress.savedWords.length} ready to review</small></span><ArrowRight size={16} /></Link>
+            <Link to="/pronunciation" className="quick-tool-card"><span className="quick-tool-icon"><Headphones size={19} /></span><span><strong>{t('toolPronunciation')}</strong><small>{t('toolPronunciationDetail')}</small></span><ArrowRight size={16} /></Link>
+            <Link to="/knowledge" className="quick-tool-card"><span className="quick-tool-icon quick-tool-mint"><BookOpen size={19} /></span><span><strong>{t('toolDictionary')}</strong><small>{t('toolDictionaryDetail')}</small></span><ArrowRight size={16} /></Link>
+            <Link to="/stories" className="quick-tool-card"><span className="quick-tool-icon quick-tool-lilac"><Sparkles size={19} /></span><span><strong>{t('toolStories')}</strong><small>{t('toolStoriesDetail')}</small></span><ArrowRight size={16} /></Link>
+            <Link to="/review" className="quick-tool-card"><span className="quick-tool-icon quick-tool-butter"><RotateCcw size={19} /></span><span><strong>{t('toolSavedWords')}</strong><small>{progress.savedWords.length} {t('savedWordsReady')}</small></span><ArrowRight size={16} /></Link>
           </div>
         </div>
       </section>
 
       <section className="section section-cream dashboard-story-section">
         <div className="page-container">
-          <SectionHeading eyebrow={lang === 'vi' ? 'TPR · TPRS · NGHE HIỂU' : 'COMPREHENSIBLE STORY PRACTICE'} title="A small story is a real place to use new words." body="These extra stories complement the structured A1 lessons. Listen to each line, notice the vocabulary, and check what you understood." link={{ to: '/stories', label: 'Open story library' }} />
+          <SectionHeading eyebrow={t('storySectionEyebrow')} title={t('storySectionTitle')} body={t('storySectionBody')} link={{ to: '/stories', label: t('openStoryLibrary') }} />
           <StoryCard story={featuredStory} completed={progress.completedStories?.includes(featuredStory.id)} />
         </div>
       </section>

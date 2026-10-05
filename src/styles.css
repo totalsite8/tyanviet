@@ -1475,3 +1475,9 @@ img { max-width: 100%; }
   .article-detail-header h1 { font-size:42px; }
   .not-found-glyph { font-size:110px; }
 }
+
+.language-toggle { gap:2px; padding:3px; border:1px solid var(--line); border-radius:4px; background:rgba(255,255,255,.55); }
+.language-toggle button { min-width:29px; height:25px; padding:0 5px; border:0; border-radius:2px; background:transparent; color:#77847b; font-size:9px; font-weight:700; letter-spacing:.04em; cursor:pointer; }
+.language-toggle button:hover { color:var(--ink); }
+.language-toggle button.language-current { background:var(--dark); color:#fffdf5; }
+.language-toggle button:focus-visible { outline-offset:2px; }
